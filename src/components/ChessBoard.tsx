@@ -80,7 +80,13 @@ function ChessBoard() {
           image = piece.image;
         }
       });
-      board.push(<Tiles number={num} image={image} />);
+      board.push(
+        <Tiles
+          number={num}
+          image={image}
+          key={`${horizontal[i]}${vertical[j]}`}
+        />
+      );
     }
   }
   return (

@@ -13,7 +13,15 @@ export default function Tiles({ number, image }: Props) {
       className="h-[80px] w-[80px] flex justify-center items-center "
       style={{ backgroundColor: `${bgColor}` }}
     >
-      {image && <img src={image} alt="" className="h-[100%] w-[100%]" />}
+      {image && (
+        <div
+          className="h-[100%] w-[100%]"
+          style={{
+            backgroundImage: `url(${image})`,
+            backgroundSize: "cover",
+          }}
+        />
+      )}
     </div>
   );
 }
