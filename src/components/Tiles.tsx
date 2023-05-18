@@ -15,7 +15,7 @@ export default function Tiles({ number, image }: Props) {
     >
       {image && (
         <div
-          className="h-[100%] w-[100%]"
+          className="chess-piece h-[80px] w-[80px] active:cursor-grabbing  hover:cursor-grab"
           style={{
             backgroundImage: `url(${image})`,
             backgroundSize: "cover",
