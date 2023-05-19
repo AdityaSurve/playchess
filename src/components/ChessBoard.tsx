@@ -172,9 +172,17 @@ function ChessBoard() {
           currentPiece.team,
           pieces
         );
+
+        const isEnPassantMove = referee.isEnPassantMove(
+          x,
+          y,
+          currentPiece.team,
+          pieces
+        );
+
         if (validMove) {
           const undatedPieces = pieces.reduce((results, piece) => {
-            if (piece.x === currentPiece.x && piece.y === currentPiece.y) {
+            if (piece.x === gridx && piece.y === gridy) {
               piece.x = x;
               piece.y = y;
               results.push(piece);

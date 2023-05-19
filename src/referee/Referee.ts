@@ -18,6 +18,17 @@ export default class Referee {
     if (piece) return true;
     return false;
   }
+  isEnPassantMove(x: number, y: number, team: Team, boardState: Piece[]) {
+    const pieceDirection = team === Team.White ? 1 : -1;
+
+    const piece = boardState.find(
+      (p) => p.x === x && p.y === y + pieceDirection
+    );
+    if (piece) {
+      console.log("we got an en passant move");
+    } else {
+    }
+  }
   isValidMove(
     px: number,
     py: number,
