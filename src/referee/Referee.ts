@@ -6,7 +6,18 @@ export default class Referee {
     if (piece) return true;
     return false;
   }
-
+  isOccupiedByOpponent(
+    x: number,
+    y: number,
+    team: Team,
+    boardState: Piece[]
+  ): boolean {
+    const piece = boardState.find(
+      (p) => p.x === x && p.y === y && p.team !== team
+    );
+    if (piece) return true;
+    return false;
+  }
   isValidMove(
     px: number,
     py: number,
@@ -29,6 +40,10 @@ export default class Referee {
         } else if (y - py === pawnDirection) {
           if (!this.isOccupied(x, y, boardState)) return true;
         }
+      } else if (x - px === -1 && y - py === pawnDirection) {
+        if (this.isOccupiedByOpponent(x, y, team, boardState)) return true;
+      } else if (x - px === 1 && y - py === pawnDirection) {
+        if (this.isOccupiedByOpponent(x, y, team, boardState)) return true;
       }
     }
     return false;
