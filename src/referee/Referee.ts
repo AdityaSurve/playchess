@@ -1,34 +1,36 @@
-import { PieceType, Team } from "../components/ChessBoard";
+import { PieceType, Team, Piece } from "../components/ChessBoard";
 
 export default class Referee {
+  isOccupied(x: number, y: number, boardState: Piece[]): boolean {
+    const piece = boardState.find((p) => p.x === x && p.y === y);
+    if (piece) return true;
+    return false;
+  }
+
   isValidMove(
     px: number,
     py: number,
     x: number,
     y: number,
     type: PieceType,
-    team: Team
+    team: Team,
+    boardState: Piece[]
   ) {
     if (type === PieceType.Pawn) {
-      if (team === Team.White) {
-        if (py === 1) {
-          if (x === px && (y === py + 2 || y === py + 1)) {
+      const specialRow = team === Team.White ? 1 : 6;
+      const pawnDirection = team === Team.White ? 1 : -1;
+      if (px === x) {
+        if (py === specialRow && y - py === 2 * pawnDirection) {
+          if (
+            !this.isOccupied(x, y, boardState) &&
+            !this.isOccupied(x, y - pawnDirection, boardState)
+          )
             return true;
-          }
-        } else if (x === px && y === py - 1) {
-          return true;
-        }
-      } else {
-        if (py === 6) {
-          if (x === px && (y === py - 2 || y === py - 2)) {
-            return true;
-          }
-        } else if (x === px && y === py - 1) {
-          return true;
+        } else if (y - py === pawnDirection) {
+          if (!this.isOccupied(x, y, boardState)) return true;
         }
       }
-
-      return false;
     }
+    return false;
   }
 }
