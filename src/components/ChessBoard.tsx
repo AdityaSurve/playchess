@@ -12,12 +12,15 @@ import {
   Position,
   samePosition,
 } from "../Constants";
+import { type } from "os";
 
 export default function ChessBoard() {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
+  const [promotionPawn, setPromotionPawn] = useState<Piece>();
   const [grabPosition, setGrabPosition] = useState<Position>({ x: -1, y: -1 });
   const [pieces, setPieces] = useState<Piece[]>(initialBoardState);
   const chessboardRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const referee = new Referee();
   function grabPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
@@ -124,6 +127,11 @@ export default function ChessBoard() {
                 piece.type === PieceType.Pawn;
               piece.position.x = x;
               piece.position.y = y;
+              let promotionRow = piece.team === Team.White ? 7 : 0;
+              if (y === promotionRow && piece.type === PieceType.Pawn) {
+                modalRef.current?.classList.remove("hidden");
+                setPromotionPawn(piece);
+              }
               results.push(piece);
             } else if (!samePosition(piece.position, { x, y })) {
               if (piece.type === PieceType.Pawn) {
@@ -143,6 +151,40 @@ export default function ChessBoard() {
     }
     setActivePiece(null);
   }
+  function promotePawn(type: PieceType) {
+    if (promotionPawn === undefined) {
+      return;
+    }
+    const updatedPieces = pieces.reduce((results, piece) => {
+      if (samePosition(piece.position, promotionPawn.position)) {
+        piece.type = type;
+        const teamType = piece.team === Team.White ? "w" : "b";
+        let image = "";
+        switch (type) {
+          case PieceType.Bishop:
+            image = "bishop";
+            break;
+          case PieceType.Knight:
+            image = "knight";
+            break;
+          case PieceType.Queen:
+            image = "queen";
+            break;
+          case PieceType.Rook:
+            image = "rook";
+            break;
+        }
+        piece.image = `./assets/${image}_${teamType}.png`;
+      }
+      results.push(piece);
+      return results;
+    }, [] as Piece[]);
+    setPieces(updatedPieces);
+    modalRef.current?.classList.add("hidden");
+  }
+  function promotionTeamType() {
+    return promotionPawn?.team === Team.White ? "w" : "b";
+  }
   let board = [];
   for (let j = VERTICAL.length - 1; j >= 0; j--) {
     for (let i = 0; i < HORIZONTAL.length; i++) {
@@ -161,21 +203,70 @@ export default function ChessBoard() {
     }
   }
   return (
-    <div
-      id="chessboard"
-      ref={chessboardRef}
-      className="h-[640px] w-[640px] bg-[#825A34] rounded-xl overflow-hidden grid grid-cols-8 text-center items-center"
-      onMouseDown={(e) => {
-        grabPiece(e);
-      }}
-      onMouseMove={(e) => {
-        movePiece(e);
-      }}
-      onMouseUp={(e) => {
-        dropPiece(e);
-      }}
-    >
-      {board}
+    <div className="flex justify-center items-center">
+      <div
+        className="flex justify-center items-center h-[640px] w-[640px] screen fixed bg-transparent hidden"
+        ref={modalRef}
+      >
+        <div className="flex flex-row justify-around items-center h-[250px] w-[640px] bg-[#00000080]">
+          <div
+            onClick={() => promotePawn(PieceType.Rook)}
+            className="h-[120px] w-[120px] flex justify-center rounded-full items-center hover:bg-[#ffffff50] hover:cursor-pointer"
+          >
+            <img
+              src={`./assets/rook_${promotionTeamType()}.png`}
+              alt=""
+              className="h-[80px]"
+            />
+          </div>
+          <div
+            onClick={() => promotePawn(PieceType.Bishop)}
+            className="h-[120px] w-[120px] flex justify-center rounded-full items-center hover:bg-[#ffffff50] hover:cursor-pointer"
+          >
+            <img
+              src={`./assets/bishop_${promotionTeamType()}.png`}
+              alt=""
+              className="h-[80px]"
+            />
+          </div>
+          <div
+            onClick={() => promotePawn(PieceType.Knight)}
+            className="h-[120px] w-[120px] flex justify-center rounded-full items-center hover:bg-[#ffffff50] hover:cursor-pointer"
+          >
+            <img
+              src={`./assets/knight_${promotionTeamType()}.png`}
+              alt=""
+              className="h-[80px]"
+            />
+          </div>
+          <div
+            onClick={() => promotePawn(PieceType.Queen)}
+            className="h-[120px] w-[120px] flex justify-center rounded-full items-center hover:bg-[#ffffff50] hover:cursor-pointer"
+          >
+            <img
+              src={`./assets/queen_${promotionTeamType()}.png`}
+              alt=""
+              className="h-[80px]"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        id="chessboard"
+        ref={chessboardRef}
+        className="h-[640px] w-[640px] bg-[#825A34] rounded-xl overflow-hidden grid grid-cols-8 text-center items-center"
+        onMouseDown={(e) => {
+          grabPiece(e);
+        }}
+        onMouseMove={(e) => {
+          movePiece(e);
+        }}
+        onMouseUp={(e) => {
+          dropPiece(e);
+        }}
+      >
+        {board}
+      </div>
     </div>
   );
 }
