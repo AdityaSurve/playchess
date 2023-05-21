@@ -12,7 +12,6 @@ import {
   Position,
   samePosition,
 } from "../Constants";
-import { type } from "os";
 
 export default function ChessBoard() {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
@@ -130,6 +129,7 @@ export default function ChessBoard() {
               let promotionRow = piece.team === Team.White ? 7 : 0;
               if (y === promotionRow && piece.type === PieceType.Pawn) {
                 modalRef.current?.classList.remove("hidden");
+                modalRef.current?.classList.add("flex");
                 setPromotionPawn(piece);
               }
               results.push(piece);
@@ -205,7 +205,7 @@ export default function ChessBoard() {
   return (
     <div className="flex justify-center items-center">
       <div
-        className="flex justify-center items-center h-[640px] w-[640px] screen fixed bg-transparent hidden"
+        className="justify-center items-center h-[640px] w-[640px] screen fixed bg-transparent hidden"
         ref={modalRef}
       >
         <div className="flex flex-row justify-around items-center h-[250px] w-[640px] bg-[#00000080]">
