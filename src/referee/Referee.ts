@@ -147,6 +147,16 @@ export default class Referee {
         if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
           return true;
       }
+    } else if (type === PieceType.Queen) {
+      if (
+        Math.abs(desiredPosition.x - initialPosition.x) ===
+          Math.abs(desiredPosition.y - initialPosition.y) ||
+        desiredPosition.x === initialPosition.x ||
+        desiredPosition.y === initialPosition.y
+      ) {
+        if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
+          return true;
+      }
     }
     return false;
   }
