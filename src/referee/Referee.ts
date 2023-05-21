@@ -1,8 +1,10 @@
-import { PieceType, Team, Piece } from "../components/ChessBoard";
+import { PieceType, Team, Piece, Position } from "../Constants";
 
 export default class Referee {
   isOccupied(x: number, y: number, boardState: Piece[]): boolean {
-    const piece = boardState.find((p) => p.x === x && p.y === y);
+    const piece = boardState.find(
+      (p) => p.position.x === x && p.position.y === y
+    );
     if (piece) return true;
     return false;
   }
@@ -13,16 +15,14 @@ export default class Referee {
     boardState: Piece[]
   ): boolean {
     const piece = boardState.find(
-      (p) => p.x === x && p.y === y && p.team !== team
+      (p) => p.position.x === x && p.position.y === y && p.team !== team
     );
     if (piece) return true;
     return false;
   }
   isEnPassantMove(
-    px: number,
-    py: number,
-    x: number,
-    y: number,
+    initialPosition: Position,
+    desiredPosition: Position,
     type: PieceType,
     team: Team,
     boardState: Piece[]
@@ -30,9 +30,16 @@ export default class Referee {
     const pawnDirection = team === Team.White ? 1 : -1;
 
     if (type === PieceType.Pawn) {
-      if ((x - px === -1 || x - px === 1) && y - py === pawnDirection) {
+      if (
+        (desiredPosition.x - initialPosition.x === -1 ||
+          desiredPosition.x - initialPosition.x === 1) &&
+        desiredPosition.y - initialPosition.y === pawnDirection
+      ) {
         const piece = boardState.find(
-          (p) => p.x === x && p.y === y - pawnDirection && p.enPassant
+          (p) =>
+            p.position.x === desiredPosition.x &&
+            p.position.y === desiredPosition.y - pawnDirection &&
+            p.enPassant
         );
         if (piece) return true;
       }
@@ -41,10 +48,8 @@ export default class Referee {
     return false;
   }
   isValidMove(
-    px: number,
-    py: number,
-    x: number,
-    y: number,
+    initialPosition: Position,
+    desiredPosition: Position,
     type: PieceType,
     team: Team,
     boardState: Piece[]
@@ -52,20 +57,56 @@ export default class Referee {
     if (type === PieceType.Pawn) {
       const specialRow = team === Team.White ? 1 : 6;
       const pawnDirection = team === Team.White ? 1 : -1;
-      if (px === x) {
-        if (py === specialRow && y - py === 2 * pawnDirection) {
+      if (initialPosition.x === desiredPosition.x) {
+        if (
+          initialPosition.y === specialRow &&
+          desiredPosition.y - initialPosition.y === 2 * pawnDirection
+        ) {
           if (
-            !this.isOccupied(x, y, boardState) &&
-            !this.isOccupied(x, y - pawnDirection, boardState)
+            !this.isOccupied(
+              desiredPosition.x,
+              desiredPosition.y,
+              boardState
+            ) &&
+            !this.isOccupied(
+              desiredPosition.x,
+              desiredPosition.y - pawnDirection,
+              boardState
+            )
           )
             return true;
-        } else if (y - py === pawnDirection) {
-          if (!this.isOccupied(x, y, boardState)) return true;
+        } else if (desiredPosition.y - initialPosition.y === pawnDirection) {
+          if (
+            !this.isOccupied(desiredPosition.x, desiredPosition.y, boardState)
+          )
+            return true;
         }
-      } else if (x - px === -1 && y - py === pawnDirection) {
-        if (this.isOccupiedByOpponent(x, y, team, boardState)) return true;
-      } else if (x - px === 1 && y - py === pawnDirection) {
-        if (this.isOccupiedByOpponent(x, y, team, boardState)) return true;
+      } else if (
+        desiredPosition.x - initialPosition.x === -1 &&
+        desiredPosition.y - initialPosition.y === pawnDirection
+      ) {
+        if (
+          this.isOccupiedByOpponent(
+            desiredPosition.x,
+            desiredPosition.y,
+            team,
+            boardState
+          )
+        )
+          return true;
+      } else if (
+        desiredPosition.x - initialPosition.x === 1 &&
+        desiredPosition.y - initialPosition.y === pawnDirection
+      ) {
+        if (
+          this.isOccupiedByOpponent(
+            desiredPosition.x,
+            desiredPosition.y,
+            team,
+            boardState
+          )
+        )
+          return true;
       }
     }
     return false;
