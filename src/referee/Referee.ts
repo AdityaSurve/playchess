@@ -1,32 +1,12 @@
-import { PieceType, Team, Piece, Position, samePosition } from "../Constants";
+import { PieceType, Team, Piece, Position } from "../Constants";
+import { bishopMove } from "../rules/Bishop";
+import { kingMove } from "../rules/King";
+import { knightMove } from "../rules/Knight";
+import { pawnMove } from "../rules/Pawn";
+import { queenMove } from "../rules/Queen";
+import { rookMove } from "../rules/Rook";
 
 export default class Referee {
-  isEmptyOrOccupiedByOpponent(
-    position: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    return (
-      !this.isOccupied(position, boardState) ||
-      this.isOccupiedByOpponent(position, team, boardState)
-    );
-  }
-  isOccupied(position: Position, boardState: Piece[]): boolean {
-    const piece = boardState.find((p) => samePosition(p.position, position));
-    if (piece) return true;
-    return false;
-  }
-  isOccupiedByOpponent(
-    position: Position,
-    team: Team,
-    boardState: Piece[]
-  ): boolean {
-    const piece = boardState.find(
-      (p) => samePosition(p.position, position) && p.team !== team
-    );
-    if (piece) return true;
-    return false;
-  }
   isEnPassantMove(
     initialPosition: Position,
     desiredPosition: Position,
@@ -55,147 +35,6 @@ export default class Referee {
     return false;
   }
 
-  pawnMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    const specialRow = team === Team.White ? 1 : 6;
-    const pawnDirection = team === Team.White ? 1 : -1;
-    if (initialPosition.x === desiredPosition.x) {
-      if (
-        initialPosition.y === specialRow &&
-        desiredPosition.y - initialPosition.y === 2 * pawnDirection
-      ) {
-        if (
-          !this.isOccupied(desiredPosition, boardState) &&
-          !this.isOccupied(
-            { x: desiredPosition.x, y: desiredPosition.y - pawnDirection },
-            boardState
-          )
-        )
-          return true;
-      } else if (desiredPosition.y - initialPosition.y === pawnDirection) {
-        if (!this.isOccupied(desiredPosition, boardState)) return true;
-      }
-    } else if (
-      desiredPosition.x - initialPosition.x === -1 &&
-      desiredPosition.y - initialPosition.y === pawnDirection
-    ) {
-      if (this.isOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    } else if (
-      desiredPosition.x - initialPosition.x === 1 &&
-      desiredPosition.y - initialPosition.y === pawnDirection
-    ) {
-      if (this.isOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    }
-  }
-  knightMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    if (
-      (Math.abs(desiredPosition.x - initialPosition.x) === 2 &&
-        Math.abs(desiredPosition.y - initialPosition.y) === 1) ||
-      (Math.abs(desiredPosition.x - initialPosition.x) === 1 &&
-        Math.abs(desiredPosition.y - initialPosition.y) === 2)
-    ) {
-      if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    }
-  }
-  bishopMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    if (
-      Math.abs(desiredPosition.x - initialPosition.x) ===
-      Math.abs(desiredPosition.y - initialPosition.y)
-    ) {
-      const xDirection = desiredPosition.x - initialPosition.x > 0 ? 1 : -1;
-      const yDirection = desiredPosition.y - initialPosition.y > 0 ? 1 : -1;
-      let x = initialPosition.x + xDirection;
-      let y = initialPosition.y + yDirection;
-      while (x !== desiredPosition.x && y !== desiredPosition.y) {
-        if (this.isOccupied({ x, y }, boardState)) return false;
-        x += xDirection;
-        y += yDirection;
-      }
-      if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    }
-  }
-  rookMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    if (
-      desiredPosition.x === initialPosition.x ||
-      desiredPosition.y === initialPosition.y
-    ) {
-      const xDirection =
-        desiredPosition.x - initialPosition.x === 0
-          ? 0
-          : desiredPosition.x - initialPosition.x > 0
-          ? 1
-          : -1;
-      const yDirection =
-        desiredPosition.y - initialPosition.y === 0
-          ? 0
-          : desiredPosition.y - initialPosition.y > 0
-          ? 1
-          : -1;
-      let x = initialPosition.x + xDirection;
-      let y = initialPosition.y + yDirection;
-      while (x !== desiredPosition.x || y !== desiredPosition.y) {
-        if (this.isOccupied({ x, y }, boardState)) return false;
-        x += xDirection;
-        y += yDirection;
-      }
-      if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    }
-  }
-  queenMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    if (
-      Math.abs(desiredPosition.x - initialPosition.x) ===
-        Math.abs(desiredPosition.y - initialPosition.y) ||
-      desiredPosition.x === initialPosition.x ||
-      desiredPosition.y === initialPosition.y
-    ) {
-      if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    }
-  }
-  kingMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    team: Team,
-    boardState: Piece[]
-  ) {
-    if (
-      Math.abs(desiredPosition.x - initialPosition.x) <= 1 &&
-      Math.abs(desiredPosition.y - initialPosition.y) <= 1
-    ) {
-      if (this.isEmptyOrOccupiedByOpponent(desiredPosition, team, boardState))
-        return true;
-    }
-  }
-
   isValidMove(
     initialPosition: Position,
     desiredPosition: Position,
@@ -203,25 +42,37 @@ export default class Referee {
     team: Team,
     boardState: Piece[]
   ) {
+    let isValid = false;
     switch (type) {
       case PieceType.Pawn:
+        isValid = pawnMove(initialPosition, desiredPosition, team, boardState);
         break;
       case PieceType.Knight:
-        console.log("Knight");
+        isValid = knightMove(
+          initialPosition,
+          desiredPosition,
+          team,
+          boardState
+        );
         break;
       case PieceType.Bishop:
-        console.log("Bishop");
+        isValid = bishopMove(
+          initialPosition,
+          desiredPosition,
+          team,
+          boardState
+        );
         break;
       case PieceType.Rook:
-        console.log("Rook");
+        isValid = rookMove(initialPosition, desiredPosition, team, boardState);
         break;
       case PieceType.Queen:
-        console.log("Queen");
+        isValid = queenMove(initialPosition, desiredPosition, team, boardState);
         break;
       case PieceType.King:
-        console.log("King");
+        isValid = kingMove(initialPosition, desiredPosition, team, boardState);
     }
 
-    return false;
+    return isValid;
   }
 }
