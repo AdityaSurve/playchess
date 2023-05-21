@@ -11,6 +11,7 @@ export interface Piece {
   y: number;
   type: PieceType;
   team: Team;
+  enPassant?: boolean;
 }
 
 export enum PieceType {
@@ -174,19 +175,47 @@ function ChessBoard() {
         );
 
         const isEnPassantMove = referee.isEnPassantMove(
+          gridx,
+          gridy,
           x,
           y,
+          currentPiece.type,
           currentPiece.team,
           pieces
         );
-
+        const pawnDirection = currentPiece.team === Team.White ? 1 : -1;
+        if (isEnPassantMove) {
+          const updatedPieces = pieces.reduce((results, piece) => {
+            if (piece.x === gridx && piece.y === gridy) {
+              piece.enPassant = false;
+              piece.x = x;
+              piece.y = y;
+              results.push(piece);
+            } else if (!(piece.x === x && piece.y === y - pawnDirection)) {
+              if (piece.type === PieceType.Pawn) {
+                piece.enPassant = false;
+              }
+              results.push(piece);
+            }
+            return results;
+          }, [] as Piece[]);
+          setPieces(updatedPieces);
+        }
         if (validMove) {
           const undatedPieces = pieces.reduce((results, piece) => {
             if (piece.x === gridx && piece.y === gridy) {
+              if (Math.abs(gridy - y) === 2 && piece.type === PieceType.Pawn) {
+                piece.enPassant = true;
+              } else {
+                piece.enPassant = false;
+              }
               piece.x = x;
               piece.y = y;
               results.push(piece);
             } else if (!(piece.x === x && piece.y === y)) {
+              if (piece.type === PieceType.Pawn) {
+                piece.enPassant = false;
+              }
               results.push(piece);
             }
             return results;

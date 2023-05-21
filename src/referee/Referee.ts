@@ -18,16 +18,27 @@ export default class Referee {
     if (piece) return true;
     return false;
   }
-  isEnPassantMove(x: number, y: number, team: Team, boardState: Piece[]) {
-    const pieceDirection = team === Team.White ? 1 : -1;
+  isEnPassantMove(
+    px: number,
+    py: number,
+    x: number,
+    y: number,
+    type: PieceType,
+    team: Team,
+    boardState: Piece[]
+  ) {
+    const pawnDirection = team === Team.White ? 1 : -1;
 
-    const piece = boardState.find(
-      (p) => p.x === x && p.y === y + pieceDirection
-    );
-    if (piece) {
-      console.log("we got an en passant move");
-    } else {
+    if (type === PieceType.Pawn) {
+      if ((x - px === -1 || x - px === 1) && y - py === pawnDirection) {
+        const piece = boardState.find(
+          (p) => p.x === x && p.y === y - pawnDirection && p.enPassant
+        );
+        if (piece) return true;
+      }
     }
+
+    return false;
   }
   isValidMove(
     px: number,
