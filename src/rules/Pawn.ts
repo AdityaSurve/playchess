@@ -1,4 +1,4 @@
-import { Piece, PieceType, Position, Team, samePosition } from "../Constants";
+import { Piece, Position, Team, samePosition } from "../Constants";
 import { isOccupied, isOccupiedByOpponent } from "./General";
 
 export const pawnMove = (
