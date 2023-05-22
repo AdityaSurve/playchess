@@ -38,3 +38,37 @@ export const pawnMove = (
   }
   return false;
 };
+
+export const getPossiblePawnMoves = (
+  pawn: Piece,
+  boardState: Piece[]
+): Position[] => {
+  const possibleMoves: Position[] = [];
+  const pawnDirection = pawn.team === Team.White ? 1 : -1;
+  const specialRow = pawn.team === Team.White ? 1 : 6;
+
+  if (
+    !isOccupied(
+      { x: pawn.position.x, y: pawn.position.y + pawnDirection },
+      boardState
+    )
+  ) {
+    possibleMoves.push({
+      x: pawn.position.x,
+      y: pawn.position.y + pawnDirection,
+    });
+    if (
+      pawn.position.y === specialRow &&
+      !isOccupied(
+        { x: pawn.position.x, y: pawn.position.y + 2 * pawnDirection },
+        boardState
+      )
+    ) {
+      possibleMoves.push({
+        x: pawn.position.x,
+        y: pawn.position.y + 2 * pawnDirection,
+      });
+    }
+  }
+  return possibleMoves;
+};
