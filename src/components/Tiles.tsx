@@ -15,7 +15,7 @@ export default function Tiles({ number, image, highlight }: Props) {
         className="h-[80px] w-[80px] flex justify-center items-center relative"
         style={{ backgroundColor: `${bgColor}` }}
       >
-        <div className="absolute rounded-full h-[40px] w-[40px] bg-[#00000070] top-[20px] left-[20px]" />
+        <div className="absolute rounded-full h-[30px] w-[30px] bg-[#00000070] top-[25px] left-[25px]" />
         {image && (
           <div
             className="chess-piece h-[70px] w-[70px] active:cursor-grabbing  hover:cursor-grab z-[10000]"

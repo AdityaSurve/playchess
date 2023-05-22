@@ -1,10 +1,10 @@
 import { PieceType, Team, Piece, Position } from "../Constants";
-import { bishopMove } from "../rules/Bishop";
-import { kingMove } from "../rules/King";
-import { knightMove } from "../rules/Knight";
+import { bishopMove, getPossibleBishopMoves } from "../rules/Bishop";
+import { getPossibleKingMoves, kingMove } from "../rules/King";
+import { getPossibleKnightMoves, knightMove } from "../rules/Knight";
 import { getPossiblePawnMoves, pawnMove } from "../rules/Pawn";
-import { queenMove } from "../rules/Queen";
-import { rookMove } from "../rules/Rook";
+import { getPossibleQueenMoves, queenMove } from "../rules/Queen";
+import { getPossibleRookMoves, rookMove } from "../rules/Rook";
 
 export default class Referee {
   isEnPassantMove(
@@ -80,6 +80,16 @@ export default class Referee {
     switch (piece.type) {
       case PieceType.Pawn:
         return getPossiblePawnMoves(piece, boardState);
+      case PieceType.Knight:
+        return getPossibleKnightMoves(piece, boardState);
+      case PieceType.Bishop:
+        return getPossibleBishopMoves(piece, boardState);
+      case PieceType.Rook:
+        return getPossibleRookMoves(piece, boardState);
+      case PieceType.Queen:
+        return getPossibleQueenMoves(piece, boardState);
+      case PieceType.King:
+        return getPossibleKingMoves(piece, boardState);
       default:
         return [];
     }

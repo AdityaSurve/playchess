@@ -16,3 +16,25 @@ export const kingMove = (
   }
   return false;
 };
+
+export const getPossibleKingMoves = (
+  king: Piece,
+  boardState: Piece[]
+): Position[] => {
+  const possibleMoves: Position[] = [];
+  const possiblePositions: Position[] = [
+    { x: king.position.x + 1, y: king.position.y + 1 },
+    { x: king.position.x + 1, y: king.position.y - 1 },
+    { x: king.position.x - 1, y: king.position.y + 1 },
+    { x: king.position.x - 1, y: king.position.y - 1 },
+    { x: king.position.x + 1, y: king.position.y },
+    { x: king.position.x - 1, y: king.position.y },
+    { x: king.position.x, y: king.position.y + 1 },
+    { x: king.position.x, y: king.position.y - 1 },
+  ];
+  possiblePositions.forEach((position) => {
+    if (kingMove(king.position, position, king.team, boardState))
+      possibleMoves.push(position);
+  });
+  return possibleMoves;
+};

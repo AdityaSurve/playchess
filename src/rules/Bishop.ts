@@ -25,3 +25,24 @@ export const bishopMove = (
   }
   return false;
 };
+
+export const getPossibleBishopMoves = (
+  bishop: Piece,
+  boardState: Piece[]
+): Position[] => {
+  const possibleMoves: Position[] = [];
+  const possiblePositions: Position[] = [];
+  for (let i = 1; i < 8; i++) {
+    possiblePositions.push(
+      { x: bishop.position.x + i, y: bishop.position.y + i },
+      { x: bishop.position.x + i, y: bishop.position.y - i },
+      { x: bishop.position.x - i, y: bishop.position.y + i },
+      { x: bishop.position.x - i, y: bishop.position.y - i }
+    );
+  }
+  possiblePositions.forEach((position) => {
+    if (bishopMove(bishop.position, position, bishop.team, boardState))
+      possibleMoves.push(position);
+  });
+  return possibleMoves;
+};

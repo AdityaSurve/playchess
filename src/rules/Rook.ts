@@ -35,3 +35,24 @@ export const rookMove = (
   }
   return false;
 };
+
+export const getPossibleRookMoves = (
+  rook: Piece,
+  boardState: Piece[]
+): Position[] => {
+  const possibleMoves: Position[] = [];
+  const possiblePositions: Position[] = [];
+  for (let i = 1; i < 8; i++) {
+    possiblePositions.push(
+      { x: rook.position.x + i, y: rook.position.y },
+      { x: rook.position.x - i, y: rook.position.y },
+      { x: rook.position.x, y: rook.position.y + i },
+      { x: rook.position.x, y: rook.position.y - i }
+    );
+  }
+  possiblePositions.forEach((position) => {
+    if (rookMove(rook.position, position, rook.team, boardState))
+      possibleMoves.push(position);
+  });
+  return possibleMoves;
+};

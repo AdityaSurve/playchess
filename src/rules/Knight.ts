@@ -18,3 +18,26 @@ export const knightMove = (
   }
   return false;
 };
+
+export const getPossibleKnightMoves = (
+  knight: Piece,
+  boardState: Piece[]
+): Position[] => {
+  const possibleMoves: Position[] = [];
+
+  const possiblePositions: Position[] = [
+    { x: knight.position.x + 2, y: knight.position.y + 1 },
+    { x: knight.position.x + 2, y: knight.position.y - 1 },
+    { x: knight.position.x - 2, y: knight.position.y + 1 },
+    { x: knight.position.x - 2, y: knight.position.y - 1 },
+    { x: knight.position.x + 1, y: knight.position.y + 2 },
+    { x: knight.position.x + 1, y: knight.position.y - 2 },
+    { x: knight.position.x - 1, y: knight.position.y + 2 },
+    { x: knight.position.x - 1, y: knight.position.y - 2 },
+  ];
+  possiblePositions.forEach((position) => {
+    if (knightMove(knight.position, position, knight.team, boardState))
+      possibleMoves.push(position);
+  });
+  return possibleMoves;
+};

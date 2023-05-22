@@ -18,3 +18,50 @@ export const queenMove = (
   }
   return false;
 };
+
+export const getPossibleQueenMoves = (
+  queen: Piece,
+  boardState: Piece[]
+): Position[] => {
+  const possibleMoves: Position[] = [];
+  const possiblePositions: Position[] = [];
+  for (let i = 1; i < 8; i++) {
+    possiblePositions.push({
+      x: queen.position.x + i,
+      y: queen.position.y + i,
+    });
+    possiblePositions.push({
+      x: queen.position.x - i,
+      y: queen.position.y - i,
+    });
+    possiblePositions.push({
+      x: queen.position.x + i,
+      y: queen.position.y - i,
+    });
+    possiblePositions.push({
+      x: queen.position.x - i,
+      y: queen.position.y + i,
+    });
+    possiblePositions.push({
+      x: queen.position.x + i,
+      y: queen.position.y,
+    });
+    possiblePositions.push({
+      x: queen.position.x - i,
+      y: queen.position.y,
+    });
+    possiblePositions.push({
+      x: queen.position.x,
+      y: queen.position.y + i,
+    });
+    possiblePositions.push({
+      x: queen.position.x,
+      y: queen.position.y - i,
+    });
+  }
+  possiblePositions.forEach((position) => {
+    if (queenMove(queen.position, position, queen.team, boardState))
+      possibleMoves.push(position);
+  });
+  return possibleMoves;
+};
