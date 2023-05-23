@@ -24,20 +24,21 @@ export const getPossibleKnightMoves = (
   boardState: Piece[]
 ): Position[] => {
   const possibleMoves: Position[] = [];
-
-  const possiblePositions: Position[] = [
-    { x: knight.position.x + 2, y: knight.position.y + 1 },
-    { x: knight.position.x + 2, y: knight.position.y - 1 },
-    { x: knight.position.x - 2, y: knight.position.y + 1 },
-    { x: knight.position.x - 2, y: knight.position.y - 1 },
-    { x: knight.position.x + 1, y: knight.position.y + 2 },
-    { x: knight.position.x + 1, y: knight.position.y - 2 },
-    { x: knight.position.x - 1, y: knight.position.y + 2 },
-    { x: knight.position.x - 1, y: knight.position.y - 2 },
-  ];
-  possiblePositions.forEach((position) => {
-    if (knightMove(knight.position, position, knight.team, boardState))
-      possibleMoves.push(position);
-  });
+  for (let i = -1; i <= 2; i += 2) {
+    for (let j = -1; j <= 2; j += 2) {
+      const verticalMoves: Position = {
+        x: knight.position.x + j,
+        y: knight.position.y + i * 2,
+      };
+      const horizontalMoves: Position = {
+        x: knight.position.x + i * 2,
+        y: knight.position.y + j,
+      };
+      if (isEmptyOrOccupiedByOpponent(verticalMoves, knight.team, boardState))
+        possibleMoves.push(verticalMoves);
+      if (isEmptyOrOccupiedByOpponent(horizontalMoves, knight.team, boardState))
+        possibleMoves.push(horizontalMoves);
+    }
+  }
   return possibleMoves;
 };

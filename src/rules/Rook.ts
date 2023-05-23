@@ -1,5 +1,9 @@
 import { Piece, Position, Team } from "../Constants";
-import { isEmptyOrOccupiedByOpponent, isOccupied } from "./General";
+import {
+  isEmptyOrOccupiedByOpponent,
+  isOccupied,
+  isOccupiedByOpponent,
+} from "./General";
 
 export const rookMove = (
   initialPosition: Position,
@@ -41,18 +45,66 @@ export const getPossibleRookMoves = (
   boardState: Piece[]
 ): Position[] => {
   const possibleMoves: Position[] = [];
-  const possiblePositions: Position[] = [];
   for (let i = 1; i < 8; i++) {
-    possiblePositions.push(
-      { x: rook.position.x + i, y: rook.position.y },
-      { x: rook.position.x - i, y: rook.position.y },
-      { x: rook.position.x, y: rook.position.y + i },
-      { x: rook.position.x, y: rook.position.y - i }
-    );
+    if (rook.position.y + i > 7) break;
+    const destination: Position = {
+      x: rook.position.x,
+      y: rook.position.y + i,
+    };
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, rook.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
   }
-  possiblePositions.forEach((position) => {
-    if (rookMove(rook.position, position, rook.team, boardState))
-      possibleMoves.push(position);
-  });
+  for (let i = 1; i < 8; i++) {
+    if (rook.position.y - i < 0) break;
+    const destination: Position = {
+      x: rook.position.x,
+      y: rook.position.y - i,
+    };
+
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, rook.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 8; i++) {
+    if (rook.position.x - i < 0) break;
+    const destination: Position = {
+      x: rook.position.x - i,
+      y: rook.position.y,
+    };
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, rook.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 8; i++) {
+    if (rook.position.x + i > 7) break;
+    const destination: Position = {
+      x: rook.position.x + i,
+      y: rook.position.y,
+    };
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, rook.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
   return possibleMoves;
 };

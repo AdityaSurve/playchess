@@ -1,5 +1,9 @@
 import { Piece, Position, Team } from "../Constants";
-import { isEmptyOrOccupiedByOpponent } from "./General";
+import {
+  isEmptyOrOccupiedByOpponent,
+  isOccupied,
+  isOccupiedByOpponent,
+} from "./General";
 
 export const kingMove = (
   initialPosition: Position,
@@ -22,19 +26,186 @@ export const getPossibleKingMoves = (
   boardState: Piece[]
 ): Position[] => {
   const possibleMoves: Position[] = [];
-  const possiblePositions: Position[] = [
-    { x: king.position.x + 1, y: king.position.y + 1 },
-    { x: king.position.x + 1, y: king.position.y - 1 },
-    { x: king.position.x - 1, y: king.position.y + 1 },
-    { x: king.position.x - 1, y: king.position.y - 1 },
-    { x: king.position.x + 1, y: king.position.y },
-    { x: king.position.x - 1, y: king.position.y },
-    { x: king.position.x, y: king.position.y + 1 },
-    { x: king.position.x, y: king.position.y - 1 },
-  ];
-  possiblePositions.forEach((position) => {
-    if (kingMove(king.position, position, king.team, boardState))
-      possibleMoves.push(position);
-  });
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x,
+      y: king.position.y + i,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x,
+      y: king.position.y - i,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x - i,
+      y: king.position.y,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x + i,
+      y: king.position.y,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x + i,
+      y: king.position.y + i,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x + i,
+      y: king.position.y - i,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x - i,
+      y: king.position.y - i,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+  for (let i = 1; i < 2; i++) {
+    const destination: Position = {
+      x: king.position.x - i,
+      y: king.position.y + i,
+    };
+    if (
+      destination.x < 0 ||
+      destination.x > 7 ||
+      destination.y < 0 ||
+      destination.y > 7
+    ) {
+      break;
+    }
+
+    if (!isOccupied(destination, boardState)) {
+      possibleMoves.push(destination);
+    } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
+      possibleMoves.push(destination);
+      break;
+    } else {
+      break;
+    }
+  }
+
   return possibleMoves;
 };
