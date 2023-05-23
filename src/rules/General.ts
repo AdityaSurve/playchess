@@ -1,5 +1,4 @@
 import { Piece, Position, Team, samePosition } from "../Constants";
-
 export const isEmptyOrOccupiedByOpponent = (
   position: Position,
   team: Team,
@@ -10,7 +9,6 @@ export const isEmptyOrOccupiedByOpponent = (
     isOccupiedByOpponent(position, team, boardState)
   );
 };
-
 export const isOccupied = (
   position: Position,
   boardState: Piece[]
@@ -19,7 +17,6 @@ export const isOccupied = (
   if (piece) return true;
   return false;
 };
-
 export const isOccupiedByOpponent = (
   position: Position,
   team: Team,

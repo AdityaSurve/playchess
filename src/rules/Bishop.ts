@@ -35,7 +35,6 @@ export const getPossibleBishopMoves = (
   boardState: Piece[]
 ): Position[] => {
   const possibleMoves: Position[] = [];
-  // Upper right movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: bishop.position.x + i,

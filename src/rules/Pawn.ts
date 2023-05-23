@@ -1,6 +1,5 @@
 import { Piece, Position, Team, samePosition } from "../Constants";
 import { isOccupied, isOccupiedByOpponent } from "./General";
-
 export const pawnMove = (
   initialPosition: Position,
   desiredPosition: Position,
@@ -38,7 +37,6 @@ export const pawnMove = (
   }
   return false;
 };
-
 export const getPossiblePawnMoves = (
   pawn: Piece,
   boardState: Piece[]

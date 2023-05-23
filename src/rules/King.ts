@@ -196,7 +196,6 @@ export const getPossibleKingMoves = (
     ) {
       break;
     }
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, king.team, boardState)) {
@@ -206,6 +205,5 @@ export const getPossibleKingMoves = (
       break;
     }
   }
-
   return possibleMoves;
 };

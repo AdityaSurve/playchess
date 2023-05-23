@@ -33,7 +33,6 @@ export const getPossibleQueenMoves = (
       x: queen.position.x,
       y: queen.position.y + i,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -43,14 +42,11 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Bottom movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x,
       y: queen.position.y - i,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -60,14 +56,11 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Left movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x - i,
       y: queen.position.y,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -77,14 +70,11 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Right movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x + i,
       y: queen.position.y,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -94,14 +84,11 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Upper right movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x + i,
       y: queen.position.y + i,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -111,14 +98,11 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Bottom right movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x + i,
       y: queen.position.y - i,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -128,14 +112,11 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Bottom left movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x - i,
       y: queen.position.y - i,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, queen.team, boardState)) {
@@ -145,8 +126,6 @@ export const getPossibleQueenMoves = (
       break;
     }
   }
-
-  // Top left movement
   for (let i = 1; i < 8; i++) {
     const destination: Position = {
       x: queen.position.x - i,

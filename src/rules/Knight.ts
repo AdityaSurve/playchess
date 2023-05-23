@@ -1,6 +1,5 @@
 import { Piece, Position, Team } from "../Constants";
 import { isEmptyOrOccupiedByOpponent } from "./General";
-
 export const knightMove = (
   initialPosition: Position,
   desiredPosition: Position,
@@ -18,7 +17,6 @@ export const knightMove = (
   }
   return false;
 };
-
 export const getPossibleKnightMoves = (
   knight: Piece,
   boardState: Piece[]

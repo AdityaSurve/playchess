@@ -4,7 +4,6 @@ import {
   isOccupied,
   isOccupiedByOpponent,
 } from "./General";
-
 export const rookMove = (
   initialPosition: Position,
   desiredPosition: Position,
@@ -39,7 +38,6 @@ export const rookMove = (
   }
   return false;
 };
-
 export const getPossibleRookMoves = (
   rook: Piece,
   boardState: Piece[]
@@ -66,7 +64,6 @@ export const getPossibleRookMoves = (
       x: rook.position.x,
       y: rook.position.y - i,
     };
-
     if (!isOccupied(destination, boardState)) {
       possibleMoves.push(destination);
     } else if (isOccupiedByOpponent(destination, rook.team, boardState)) {
