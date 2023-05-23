@@ -1,22 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { initialBoard } from "../../Constants";
 import { Piece, Position } from "../../models";
 import { Board } from "../../models/Board";
 import { Pawn } from "../../models/Pawn";
-import {
-  bishopMove,
-  getPossibleBishopMoves,
-  getPossibleKingMoves,
-  getPossibleKnightMoves,
-  getPossiblePawnMoves,
-  getPossibleQueenMoves,
-  getPossibleRookMoves,
-  kingMove,
-  knightMove,
-  pawnMove,
-  queenMove,
-  rookMove,
-} from "../../referee/rules";
+
 import { PieceType, TeamType } from "../../Types";
 import Chessboard from "../Chessboard/Chessboard";
 
@@ -114,66 +101,6 @@ export default function Referee() {
     }
 
     return false;
-  }
-
-  function isValidMove(
-    initialPosition: Position,
-    desiredPosition: Position,
-    type: PieceType,
-    team: TeamType
-  ) {
-    let validMove = false;
-    switch (type) {
-      case PieceType.PAWN:
-        validMove = pawnMove(
-          initialPosition,
-          desiredPosition,
-          team,
-          board.pieces
-        );
-        break;
-      case PieceType.KNIGHT:
-        validMove = knightMove(
-          initialPosition,
-          desiredPosition,
-          team,
-          board.pieces
-        );
-        break;
-      case PieceType.BISHOP:
-        validMove = bishopMove(
-          initialPosition,
-          desiredPosition,
-          team,
-          board.pieces
-        );
-        break;
-      case PieceType.ROOK:
-        validMove = rookMove(
-          initialPosition,
-          desiredPosition,
-          team,
-          board.pieces
-        );
-        break;
-      case PieceType.QUEEN:
-        validMove = queenMove(
-          initialPosition,
-          desiredPosition,
-          team,
-          board.pieces
-        );
-        break;
-      case PieceType.KING:
-        validMove = kingMove(
-          initialPosition,
-          desiredPosition,
-          team,
-          board.pieces
-        );
-    }
-
-    return validMove;
   }
 
   function promotePawn(pieceType: PieceType) {
