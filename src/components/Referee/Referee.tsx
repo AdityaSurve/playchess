@@ -139,15 +139,8 @@ export default function Referee() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "60px",
-      }}
-    >
-      <div
+    <div>
+      {/* <div
         style={{
           color: "white",
           fontSize: "24px",
@@ -156,7 +149,7 @@ export default function Referee() {
         }}
       >
         Turn: {board.totalTurns % 2 !== 0 ? "White" : "Black"}
-      </div>
+      </div> */}
       <div className="modal hidden" ref={modalRef}>
         <div className="modal-body">
           <img
