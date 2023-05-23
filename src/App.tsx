@@ -1,8 +1,9 @@
-import Referee from "./components/Referee";
+import "./App.css";
+import Referee from "./components/Referee/Referee";
 
 function App() {
   return (
-    <div className="flex h-screen w-screen justify-center items-center bg-[#202020]">
+    <div id="app">
       <Referee />
     </div>
   );
