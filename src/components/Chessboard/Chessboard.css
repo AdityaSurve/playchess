@@ -5,6 +5,8 @@
   width: 640px;
   height: 640px;
   background-color: blue;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .modal {
